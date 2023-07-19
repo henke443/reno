@@ -1,4 +1,4 @@
-```A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
+A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
 
 ```
 A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
