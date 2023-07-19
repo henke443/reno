@@ -31,10 +31,10 @@ use glob_walk::GlobWalker;
 use glob_walk::GlobWalkerBuilder;
 
 #[derive(Parser)]
-#[command(name = "MyApp")]
-#[command(author = "Kevin K. <kbknapp@gmail.com>")]
+#[command(name = "reno")]
+#[command(author = "Henrik Franzén")]
 #[command(version = "1.0")]
-#[command(about = "Does awesome things", long_about = None)]
+#[command(about = "A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.", long_about = None)]
 #[command(next_line_help = true)]
 struct Cli {
     #[arg(long, short='G')]
