@@ -50,15 +50,15 @@ struct Cli {
     Replace_regex: Option<String>,
     
     #[arg(long, short)]
-    /// Only search and replace file contents
+    /// (NOT IMPLEMENTED) Only search and replace file contents
     contents: bool,
 
     #[arg(long, short)]
-    /// Only search and replace file names
+    /// (NOT IMPLEMENTED) Only search and replace file names
     names: bool,
 
     #[arg(long, short)]
-    /// Don't modify files, just show what would happen.
+    /// (NOT IMPLEMENTED) Don't modify files, just show what would happen.
     dry: bool,
 
     #[arg(long, short)]
@@ -66,11 +66,11 @@ struct Cli {
     max_depth: Option<usize>,
 
     #[arg(long, short)]
-    /// Prepends the replacement to the start of all matched strings
+    /// (NOT IMPLEMENTED) Prepends the replacement to the start of all matched strings
     prefix: bool,
 
     #[arg(long, short)]
-    /// Appends the replacement to the end of all matched strings
+    /// (NOT IMPLEMENTED) Appends the replacement to the end of all matched strings
     suffix: bool,
 
 
