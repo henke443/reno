@@ -1,3 +1,4 @@
+I started making this a couple hours ago as of writing this so I haven't come that far. Currently it searches and replaces string contents only but will be improved to also replace filenames and so the flag works.
 A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
 
 ```
