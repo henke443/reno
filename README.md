@@ -1,6 +1,9 @@
 To see it in action run
 `cargo run -- -S "test(\.md|\.txt)" -R "changed_test$1" -G *.txt -G *.md`
 
+Or download/use the binary and run
+`reno -S "test(\.md|\.txt)" -R "changed_test$1" -G *.txt -G *.md`
+
 ```
 A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
 
