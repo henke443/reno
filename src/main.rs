@@ -39,8 +39,9 @@ use glob_walk::GlobWalkerBuilder;
 
 
 struct Cli {
-    /// Search regex
-    Search_regex: String,
+    #[arg(short = 'S')]
+    /// Search regex, can only be omitted if --names is present
+    Search_regex: Option<String>,
 
 
     #[arg(long, short = 'G')]
@@ -127,7 +128,7 @@ fn main() {
 fn walk(
     globs: Vec<String>,
     max_depth: usize,
-    search_string: String,
+    search_string: Option<String>,
     replacer_string: Option<String>,
     replace_filenames: bool,
     replace_contents: bool,
@@ -144,7 +145,7 @@ fn walk(
         b_contents = true;
     }
 
-    let replacer_string = match &replacer_string {
+    let replacer_string: &str = match &replacer_string {
         Some(s) => s,
         None => {
             b_replace = false;
@@ -163,7 +164,16 @@ fn walk(
         .filter_map(Result::ok);
 
     println!("Globs: {:?}", globs);
-
+    
+    match search_string {
+        Some(_) => {},
+        None => {
+            if (!b_names) {
+                println!("No search string provided and no --names, dry run.");
+                b_replace = false;
+            }
+        }
+    }
     let search_string = search_string.clone().unwrap();
     let re = Regex::new(&search_string).unwrap();
 
