@@ -1,5 +1,5 @@
 // Stolen from: https://github.com/gilnaa/globwalk
-// 
+//
 // Copyright (c) 2017 Gilad Naaman
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
