@@ -7,8 +7,7 @@ More examples:
 `reno -G *test.* -R "changed_test" --names` - test.txt becomes changed_test and test.md becomes changed_test, one of them will be overwritten depending on which thread wins.
 Is somewhat of a bug and I'll do some check for it but in the meantime be aware of that.
 
-`reno -S "^(Wlck?)([^\.]*)$" -G **/** -R $2 --names`
-
+`reno -S "^(FolderPrefix?)([^\.]*)$" -G **/** -R $2 --names` - Recursively removes the string FolderPrefix in the beginning of all folder names
 ```
 A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
 
