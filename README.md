@@ -4,7 +4,7 @@ To see it in action run
 `cargo run -- -S "test(\.md|\.txt)" -R "changed_test$1"`
 
 More examples:
-`reno -R "changed_test$1"` -G test.{md, txt}
+`reno -R "changed_test$1" -G test.{md, txt}` - Same effect as the above
 
 ```
 A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.

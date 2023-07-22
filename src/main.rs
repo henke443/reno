@@ -37,12 +37,10 @@ use glob_walk::GlobWalkerBuilder;
 #[command(about = "A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.", long_about = None)]
 #[command(next_line_help = true)]
 
-
 struct Cli {
     #[arg(short = 'S')]
     /// Search regex, can only be omitted if --names is present
     Search_regex: Option<String>,
-
 
     #[arg(long, short = 'G')]
     /// Filename glob patterns, defaults to: "./*.*"
@@ -140,11 +138,6 @@ fn walk(
     let mut b_contents = replace_contents;
     let mut b_replace = !b_dry;
 
-    if (!b_names && !b_contents && b_replace) {
-        b_names = true;
-        b_contents = true;
-    }
-
     let replacer_string: &str = match &replacer_string {
         Some(s) => s,
         None => {
@@ -153,6 +146,19 @@ fn walk(
             ""
         }
     };
+
+    if search_string.is_none() {
+        if (!b_names) {
+            println!("No search string provided and no --names, dry run on .");
+            b_replace = false;
+        }
+        b_contents = false;
+    }
+
+    if (!b_names && !b_contents && b_replace) {
+        b_names = true;
+        b_contents = true;
+    }
 
     let base_dir = ".";
 
@@ -164,18 +170,13 @@ fn walk(
         .filter_map(Result::ok);
 
     println!("Globs: {:?}", globs);
-    
-    match search_string {
-        Some(_) => {},
-        None => {
-            if (!b_names) {
-                println!("No search string provided and no --names, dry run.");
-                b_replace = false;
-            }
-        }
-    }
-    let search_string = search_string.clone().unwrap();
-    let re = Regex::new(&search_string).unwrap();
+
+    let search_string = search_string.unwrap_or("".into());
+    let re = if !search_string.is_empty() {
+        Regex::new(&search_string).unwrap()
+    } else {
+        Regex::new(".*").unwrap()
+    };
 
     println!("Dry run? {}", !b_replace);
 
@@ -198,23 +199,27 @@ fn walk(
         //let mut reader = BufReader::new(_reader);
 
         if b_contents {
-            println!("should do contents");
-
             let string_contents = fs::read_to_string(source_path.clone().path()).unwrap();
 
             if !string_contents.is_empty() {
                 let search_result = re.find_iter(&string_contents);
+                let v_search_result = search_result.collect::<Vec<regex::Match>>();
+                if !v_search_result.len() > 0 {
+                    println!("No search matches!");
+                }
 
-                for search_match in search_result {
+                for search_match in v_search_result {
                     print!(
-                        "(contents) {:?}: {}-{} ",
+                        "{}(contents) {:?}: {}-{} ",
+                        if b_dry { "<dry>" } else { "" },
                         source_path.path(),
                         search_match.start(),
                         search_match.end()
                     );
                 }
+
                 let result = re.replace_all(&string_contents, replacer_string);
-                println!(": {}", result);
+
                 if b_replace {
                     fs::write(source_path.path(), result.as_bytes()).unwrap();
                 }
@@ -229,17 +234,25 @@ fn walk(
             let new_path = old_path.with_file_name(PathBuf::from(new_name.clone().into_owned()));
 
             if (verbose) {
-                println!("(not changing filename) {} ", old_name.to_string_lossy(),);
+                println!(
+                    "{}(filename) {} ",
+                    if b_dry { "<dry>" } else { "" },
+                    old_name.to_string_lossy()
+                );
             }
             if (new_path.file_name().unwrap() != old_path.file_name().unwrap()) {
                 println!(
-                    "(replacing filename) {} -> {} ",
+                    "{}(filename) {} -> {} ",
+                    if b_dry { "<dry>" } else { "" },
                     old_name.to_string_lossy(),
                     new_name
                 );
 
                 if b_replace {
-                    fs::rename(&old_path, &new_path).unwrap();
+                    match fs::rename(&old_path, &new_path) {
+                        Ok(_) => {}
+                        Err(e) => println!("Error renaming file: {}", e),
+                    }
                 }
             }
         }
