@@ -18,10 +18,6 @@ Options:
           Only search and replace file names
   -m, --max-depth <MAX_DEPTH>
           Max depth of directory traversal, unlimited by default. 0 means only the current directory
-  -p, --prefix
-          (NOT IMPLEMENTED) Prepends the replacement to the start of all matched strings
-  -s, --suffix
-          (NOT IMPLEMENTED) Appends the replacement to the end of all matched strings
   -h, --help
           Print help
   -V, --version
