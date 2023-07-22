@@ -1,3 +1,6 @@
+To see it in action run
+`cargo run -- -S "test(\.md|\.txt)" -R "changed_test$1" -G *`
+
 ```
 A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
 
