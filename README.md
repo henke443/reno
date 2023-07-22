@@ -1,5 +1,4 @@
-A simple but powerful command-line batch file editor. Enables you to use regex search and replace on both filenames and contents, efficiently (multi-threaded) and cross-platform.
-Name is short for Renovate.
+Name is short for *Renovate*. A simple but powerful command-line batch file editor. Enables you to use regex search and replace on both filenames and contents, efficiently (multi-threaded) and cross-platform.
 
 To see it in action run
 `cargo run -- -S "test(\.md|\.txt)" -R "changed_test$1" -G *.txt -G *.md`
