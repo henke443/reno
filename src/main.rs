@@ -137,6 +137,11 @@ fn walk(
     let mut b_contents = replace_contents;
     let mut b_replace = !b_dry;
 
+    if (!b_names && !b_contents && b_replace) {
+        b_names = true;
+        b_contents = true;
+    }
+
     let replacer_string = match &replacer_string {
         Some(s) => s,
         None => {
