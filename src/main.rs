@@ -148,14 +148,14 @@ fn walk(
     };
 
     if search_string.is_none() {
-        if (!b_names) {
+        if !b_names {
             println!("No search string provided and no --names, dry run on .");
             b_replace = false;
         }
         b_contents = false;
     }
 
-    if (!b_names && !b_contents && b_replace) {
+    if !b_names && !b_contents && b_replace {
         b_names = true;
         b_contents = true;
     }
@@ -233,14 +233,14 @@ fn walk(
             let new_name = re.replace_all(&old_name_str, replacer_string);
             let new_path = old_path.with_file_name(PathBuf::from(new_name.clone().into_owned()));
 
-            if (verbose) {
+            if verbose {
                 println!(
                     "{}(filename) {} ",
                     if b_dry { "<dry>" } else { "" },
                     old_name.to_string_lossy()
                 );
             }
-            if (new_path.file_name().unwrap() != old_path.file_name().unwrap()) {
+            if new_path.file_name().unwrap() != old_path.file_name().unwrap() {
                 println!(
                     "{}(filename) {} -> {} ",
                     if b_dry { "<dry>" } else { "" },
@@ -257,6 +257,8 @@ fn walk(
             }
         }
     });
-    // write to file
     Ok(())
 }
+
+#[cfg(test)]
+mod test;
