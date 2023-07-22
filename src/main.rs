@@ -36,14 +36,16 @@ use glob_walk::GlobWalkerBuilder;
 #[command(version = "0.0.1")]
 #[command(about = "A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.", long_about = None)]
 #[command(next_line_help = true)]
+
+
 struct Cli {
+    /// Search regex
+    Search_regex: String,
+
+
     #[arg(long, short = 'G')]
     /// Filename glob patterns, defaults to: "./*.*"
     Glob_patterns: Option<Vec<PathBuf>>,
-
-    #[arg(short = 'S')]
-    /// Search regex
-    Search_regex: Option<String>,
 
     #[arg(short = 'R')]
     /// Replace regex
@@ -125,7 +127,7 @@ fn main() {
 fn walk(
     globs: Vec<String>,
     max_depth: usize,
-    search_string: Option<String>,
+    search_string: String,
     replacer_string: Option<String>,
     replace_filenames: bool,
     replace_contents: bool,
