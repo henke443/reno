@@ -15,7 +15,7 @@ A simple but powerful command-line batch file search-and-replace tool that is ef
 `cargo run -- "test(\.md|\.txt)" "changed_test${1}"` and then check the filenames and contents of test.txt and test.md.
 
 ## More examples:
-`reno "^(FolderPrefix?)([^\.]*)$" "${2}" --names` - Recursively removes the string FolderPrefix in the beginning of all folder and file names.
+`reno "^(FolderPrefix?)([^\.]*)$" "${2}" --names` - Recursively removes the string FolderPrefix in the beginning of all folder names.
 
 `reno "DE ?? BE EF" "00 00 ?? ??" --bin -g test.bin` - Changes the bytes in the example file from:
 
