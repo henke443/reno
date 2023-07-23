@@ -17,9 +17,7 @@ A simple but powerful command-line batch file search-and-replace tool that is ef
 ## More examples:
 `reno "^(FolderPrefix?)([^\.]*)$" "${2}" --names` - Recursively removes the string FolderPrefix in the beginning of all folder and file names.
 
-`reno "DE ?? BE EF" "00 00 ?? ??" --bin -g test.bin` - Edits the binary "DE AD BE EF" segments of the test.bin file to "00 00 BE EF"
-
-Changes the bytes in the example file from:
+`reno "DE ?? BE EF" "00 00 ?? ??" --bin -g test.bin` - Changes the bytes in the example file from:
 
 ```
 DE AD BE EF
@@ -43,12 +41,19 @@ To
 00 BE EF
 ```
 
-
-
 ## Dangerous scenarios:
 You should always run `--dry` before you let reno actually replace anything.
 For example, if you run `reno ".*" "changed_test" -g *test.* --names` then `test.txt` becomes changed_test BUT `test.md` ALSO BECOMES changed_test, leading to one of them being overwritten.
 This is somewhat of a bug and there will be some checks in place so that this doesn't happen.
+
+
+## Planned features:
+`reno "4C 79 72 61 [utf8]*10" "00 00 00 00 [??...]" --bin -g test.bin` - To be able to safely edit text in binary files it would be nice to have some way of knowing that the text is followed by (or prepended/surrounded) by some number of valid ascii characters or utf8 characters. Having regex enabled when binary searching and replacing could also be useful but I think that could prove to not be very nice, and a simple approach like this would probably be best. The three features I'm planning currently are: 
+1. [encoding_name] bracket syntax
+2. [anything]... triple dots variable length repetition
+2. [anything]*number bracket repetition syntax
+
+
 
 
 `> reno --help`
