@@ -51,6 +51,7 @@ pub struct FileReplacementInfo {
 }
 
 // Instead of a Vec<u8> we will use a Vec<ByteMatcher> to allow for wildcards
+#[derive(Debug)]
 pub struct ByteMatcher {
     pub value: u8,
     pub is_wildcard: bool,
@@ -167,7 +168,7 @@ fn do_contents_binary(
                         is_wildcard: false,
                     })
                     .or_else(|err| {
-                        if s == "*" || s == "??" || s == "?" {
+                        if s == "??" {
                             return Ok(ByteMatcher {
                                 value: 0,
                                 is_wildcard: true,
@@ -194,6 +195,9 @@ fn do_contents_binary(
     let replace_length = replace_hex_bytes.len();
     let mut potential_match: Vec<u8> = vec![0u8; search_hex_bytes.len()];
 
+    //println!("search_hex_bytes: {:?}", search_hex_bytes);
+    //println!("replace_hex_bytes: {:?}", replace_hex_bytes);
+
     loop {
         match reader.read_exact(&mut potential_match) {
             Ok(_) => {}
@@ -208,20 +212,19 @@ fn do_contents_binary(
         //println!("buffer: {:?}", potential_match);
         let mut matched = true;
         for (search_i, search_byte) in search_hex_bytes.iter().enumerate() {
-            if (search_byte.value != potential_match[search_i]) {
+            if (search_byte.value != potential_match[search_i] && !search_byte.is_wildcard) {
                 matched = false;
                 //println!("i: {} {} != {}", i, search_byte.value, potential_match[search_i]);
             }
         }
 
         if (matched) { 
-            for replace_byte in replace_hex_bytes.iter() {
-                for b in potential_match.iter_mut() {
-                    if (!replace_byte.is_wildcard) {
-                        *b = replace_byte.value;
-                    }
+            for (matched_i, matched_byte) in potential_match.iter_mut().enumerate() {
+                if (!replace_hex_bytes[matched_i].is_wildcard) {
+                    *matched_byte = replace_hex_bytes[matched_i].value;
                 }
             }
+        
         }
 
         if !b_dry && matched {

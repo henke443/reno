@@ -4,7 +4,7 @@ Name is short for *Renovate*.
 A simple but powerful command-line batch file search-and-replace tool that is efficient and cross-platform.
 
 # Features
-- Search and replace filenames using regex
+- Search and replace file and folder names using regex
 - Search and replace file contents using regex
 - Regex capture groups
 - Binary search and replace using wildcard signatures
@@ -15,13 +15,39 @@ A simple but powerful command-line batch file search-and-replace tool that is ef
 `cargo run -- "test(\.md|\.txt)" "changed_test${1}"` and then check the filenames and contents of test.txt and test.md.
 
 ## More examples:
-`reno "^(FolderPrefix?)([^\.]*)$" "${2}" --names` - Recursively removes the string FolderPrefix in the beginning of all folder names
+`reno "^(FolderPrefix?)([^\.]*)$" "${2}" --names` - Recursively removes the string FolderPrefix in the beginning of all folder and file names.
 
-`reno "DE ?? BE EF" "FF FF ?? ??" --bin -g test.bin` - Edits the binary "DE AD BE EF" segments of the test.bin file to "FF FF BE EF"
+`reno "DE ?? BE EF" "00 00 ?? ??" --bin -g test.bin` - Edits the binary "DE AD BE EF" segments of the test.bin file to "00 00 BE EF"
+
+Changes the bytes in the example file from:
+
+```
+DE AD BE EF
+DE AD BE EF
+01 02 03 04
+05 06 07 08
+09 10 11 12
+13 14 15 DE
+AD BE EF
+```
+
+To
+
+```
+00 00 BE EF
+00 00 BE EF
+01 02 03 04
+05 06 07 08
+09 10 11 12
+13 14 15 00
+00 BE EF
+```
+
+
 
 ## Dangerous scenarios:
 You should always run `--dry` before you let reno actually replace anything.
-For example, if you run `reno -g *test.* -R "changed_test" --names` then `test.txt` becomes changed_test BUT `test.md` ALSO BECOMES changed_test, leading to one of them being overwritten.
+For example, if you run `reno ".*" "changed_test" -g *test.* --names` then `test.txt` becomes changed_test BUT `test.md` ALSO BECOMES changed_test, leading to one of them being overwritten.
 This is somewhat of a bug and there will be some checks in place so that this doesn't happen.
 
 
