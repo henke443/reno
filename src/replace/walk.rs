@@ -5,35 +5,12 @@ use crate::replace::contents::*;
 use crate::replace::names::*;
 use crate::glob_walk::GlobWalkerBuilder;
 
-
-use anyhow::Context;
-
-use anyhow::__private::kind::TraitKind;
-use anyhow::bail;
-use anyhow::ensure;
 use anyhow::Result;
-use thiserror::Error;
-
 use std::str;
-
-use itertools::Itertools;
 use rayon::prelude::*;
-
-use regex::Regex;
-
 use std::fs::File;
-
-use clap::Parser;
-
-use std::fs;
 use std::fs::*;
-use std::path::Path;
-use std::path::PathBuf;
 use std::string::String;
-
-use std::io::{BufRead, BufReader, Read};
-
-use encoding_rs_io::DecodeReaderBytesBuilder;
 
 pub fn walk(
     globs: Vec<String>,
@@ -94,7 +71,7 @@ pub fn walk(
     println!("Replace regex: {}", replacer_string.clone());
 
     walker.into_iter().par_bridge().for_each(|source_path| {
-        if (b_verbose) {
+        if b_verbose {
             println!("reading file: {:?}", source_path.path());
         }
         let _source_path = source_path.path().to_str().unwrap();
@@ -158,12 +135,12 @@ pub fn walk(
                         }
                     }
                     Some(DoContentError::EmptyFile) => {
-                        if (b_verbose) {
+                        if b_verbose {
                             println!("Empty file: {:?}", e);
                         }
                     }
                     Some(DoContentError::ReadDecodingError(_path)) => {
-                        if (b_verbose) {
+                        if b_verbose {
                             println!("Read decoding error: {:?}", e);
                         }
                     },

@@ -2,33 +2,16 @@ extern crate encoding_rs;
 extern crate encoding_rs_io;
 
 use anyhow::Context;
-
-use anyhow::__private::kind::TraitKind;
-use anyhow::bail;
-use anyhow::ensure;
 use anyhow::Result;
 use thiserror::Error;
-
 use std::str;
-
-use itertools::Itertools;
-use rayon::prelude::*;
-
 use regex::Regex;
-
-use std::fs::File;
-
-use clap::Parser;
-
 use std::fs;
-use std::fs::*;
 use std::path::Path;
 use std::path::PathBuf;
 use std::string::String;
 
-use std::io::{BufRead, BufReader, Read};
 
-use encoding_rs_io::DecodeReaderBytesBuilder;
 
 #[derive(Error, Debug)]
 pub enum DoNamesError {

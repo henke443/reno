@@ -1,33 +1,18 @@
 extern crate encoding_rs;
 extern crate encoding_rs_io;
 
-use anyhow::Context;
-
-use anyhow::__private::kind::TraitKind;
-use anyhow::bail;
 use anyhow::ensure;
 use anyhow::Result;
 use thiserror::Error;
-
 use std::str;
-
 use itertools::Itertools;
-use rayon::prelude::*;
-
 use regex::Regex;
-
-use std::fs::File;
-
-use clap::Parser;
-
 use std::fs;
-use std::fs::*;
+use std::fs::File;
 use std::path::Path;
 use std::path::PathBuf;
 use std::string::String;
-
-use std::io::{BufRead, BufReader, Read};
-
+use std::io::{BufReader, Read};
 use encoding_rs_io::DecodeReaderBytesBuilder;
 
 #[derive(Error, Debug)]
@@ -122,7 +107,7 @@ fn do_contents_plain(source_path: &Path, file: File, str_search: &str, str_repla
 
     let result = re.replace_all(&str_contents, str_replace);
 
-    if (!b_dry) {
+    if !b_dry {
         let write_result = fs::write(source_path, result.as_bytes());
         ensure!(
             write_result.is_ok(),

@@ -5,11 +5,8 @@ mod glob_walk;
 mod replace;
 
 use replace::*;
-
 use std::str;
-
 use clap::Parser;
-
 use std::path::PathBuf;
 use std::string::String;
 
