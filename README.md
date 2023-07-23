@@ -17,9 +17,11 @@ A simple but powerful command-line batch file search-and-replace tool that is ef
 ## More examples:
 `reno "^(FolderPrefix?)([^\.]*)$" "${2}" --names` - Recursively removes the string FolderPrefix in the beginning of all folder names
 
+`reno "DE ?? BE EF" "FF FF ?? ??" --bin -g test.bin` - Edits the binary "DE AD BE EF" segments of the test.bin file to "FF FF BE EF"
+
 ## Dangerous scenarios:
 You should always run `--dry` before you let reno actually replace anything.
-For example, if you run `reno -G *test.* -R "changed_test" --names` then `test.txt` becomes changed_test BUT `test.md` ALSO BECOMES changed_test, leading to one of them being overwritten.
+For example, if you run `reno -g *test.* -R "changed_test" --names` then `test.txt` becomes changed_test BUT `test.md` ALSO BECOMES changed_test, leading to one of them being overwritten.
 This is somewhat of a bug and there will be some checks in place so that this doesn't happen.
 
 

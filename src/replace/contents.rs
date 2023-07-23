@@ -6,9 +6,14 @@ use anyhow::Result;
 use encoding_rs_io::DecodeReaderBytesBuilder;
 use itertools::Itertools;
 use regex::Regex;
+use std::borrow::BorrowMut;
 use std::fs;
 use std::fs::File;
+use std::fs::OpenOptions;
+use std::io::Seek;
+use std::io::SeekFrom;
 use std::io::{BufReader, Read};
+use std::os::windows::prelude::FileExt;
 use std::path::Path;
 use std::path::PathBuf;
 use std::str;
@@ -58,13 +63,14 @@ pub fn do_contents(
     b_dry: bool,
     b_bin: bool,
 ) -> Result<Vec<FileReplacementInfo>> {
-    let file = File::open(source_path)?;
+    let mut file = OpenOptions::new().read(true).write(true).open(source_path)?;
 
     let mut replacement_infos: Vec<FileReplacementInfo> = vec![];
 
     // Binary search and replace contents
     if b_bin {
-        replacement_infos = do_contents_binary(source_path, file, str_search, str_replace, b_dry)?;
+        replacement_infos =
+            do_contents_binary(source_path, &mut file, str_search, str_replace, b_dry)?;
     }
     // Plain text search and replace contents
     else {
@@ -143,7 +149,7 @@ fn do_contents_plain(
 
 fn do_contents_binary(
     source_path: &Path,
-    file: File,
+    file: &mut File,
     str_search: &str,
     str_replace: &str,
     b_dry: bool,
@@ -180,59 +186,64 @@ fn do_contents_binary(
     let replace_hex_bytes: Vec<ByteMatcher> = decode_hex_bytes(str_replace)?;
 
     // read file contents as binary and do replacement
-    let reader = BufReader::new(file);
-    let mut out_buffer: Vec<u8> = vec![];
-    let i: usize = 0;
-
-    let mut matches: Vec<(usize, usize)> = vec![];
-
-    let mut match_start: usize = 0;
-    let mut match_end: usize = 0;
-    for byte in reader.bytes() {
-        let _byte = byte?;
-        // if we have a full length match, save it for later
-        if (match_end - match_start) == search_hex_bytes.len() {
-            matches.push((match_start, match_end));
-        }
-
-        // get current match length
-        match_end = i;
-        if !search_hex_bytes[i].is_wildcard && search_hex_bytes[i].value != _byte {
-            match_start += 1; // if it doesn't match we increment match_start
-        }
-
-        // always push original byte which we will edit later
-        out_buffer.push(_byte);
-    }
+    let mut reader = BufReader::new(file.try_clone()?);
+    let mut i: usize = 0;
 
     let mut file_replacement_infos: Vec<FileReplacementInfo> = vec![];
 
-    // edit bytes with our full length matches
-    for m in matches {
-        for i in m.0..m.1 {
-            // dont do anything if replacement is wildcard or if we shouldn't write changes
-            if b_dry || replace_hex_bytes[i - m.0].is_wildcard {
-                continue;
+    let replace_length = replace_hex_bytes.len();
+    let mut potential_match: Vec<u8> = vec![0u8; search_hex_bytes.len()];
+
+    loop {
+        match reader.read_exact(&mut potential_match) {
+            Ok(_) => {}
+            Err(e) => match e.kind() {
+                std::io::ErrorKind::UnexpectedEof => break,
+                _ => {
+                    panic!("Error reading file: {:?}", e);
+                }
+            },
+        };
+
+        //println!("buffer: {:?}", potential_match);
+        let mut matched = true;
+        for (search_i, search_byte) in search_hex_bytes.iter().enumerate() {
+            if (search_byte.value != potential_match[search_i]) {
+                matched = false;
+                //println!("i: {} {} != {}", i, search_byte.value, potential_match[search_i]);
             }
-            // otherwise write change
-            out_buffer[i] = replace_hex_bytes[i - m.0].value;
         }
 
-        file_replacement_infos.push(FileReplacementInfo {
-            path: source_path.to_path_buf(),
-            did_change: !b_dry,
-            replacements: vec![ContentReplacementInfo {
-                start: m.0,
-                end: m.1,
-                length: m.1 - m.0,
-                new: str_replace.to_string(),
-                original: str_search.to_string(),
-            }],
-        });
-    }
+        if (matched) { 
+            for replace_byte in replace_hex_bytes.iter() {
+                for b in potential_match.iter_mut() {
+                    if (!replace_byte.is_wildcard) {
+                        *b = replace_byte.value;
+                    }
+                }
+            }
+        }
 
-    if !b_dry {
-        fs::write(source_path, out_buffer.as_slice())?; // write changes to file
+        if !b_dry && matched {
+            file.seek_write(&potential_match, i as u64).unwrap_or_else(|e| panic!("Could not seek_write: {:?}", e));
+        }
+
+        if (matched) {
+            file_replacement_infos.push(FileReplacementInfo {
+                path: source_path.to_path_buf(),
+                did_change: !b_dry,
+                replacements: vec![ContentReplacementInfo {
+                    start: i,
+                    end: i + replace_length,
+                    length: replace_length,
+                    new: str_replace.to_string(),
+                    original: str_search.to_string(),
+                }],
+            });
+        }
+
+        reader.seek_relative(-(potential_match.len() as i64) + 1)?;
+        i += 1;
     }
 
     return Ok(file_replacement_infos);
