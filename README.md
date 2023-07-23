@@ -1,7 +1,7 @@
 Name is short for *Renovate*. A simple but powerful command-line batch file editor. Enables you to use regex search and replace on both filenames and contents, efficiently (multi-threaded) and cross-platform.
 
 To see it in action run
-`cargo run -- -S "test(\.md|\.txt)" -R "changed_test$1"` and then check the filenames and contents of hello henrik and test.md.
+`cargo run -- -S "test(\.md|\.txt)" -R "changed_test$1"` and then check the filenames and contents of test.txt and test.md.
 
 More examples:
 `reno -G *test.* -R "changed_test" --names` - hello henrik becomes changed_test and test.md becomes changed_test, one of them will be overwritten depending on which thread wins.
