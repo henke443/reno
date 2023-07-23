@@ -15,7 +15,7 @@ const DEFAULT_MAX_DEPTH: &'static str = "4294967294";
 #[derive(Parser)]
 #[command(name = "reno")]
 #[command(author = "henke443")]
-#[command(version = "0.0.1")]
+#[command(version = "0.0.2")]
 #[command(about = "A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.", long_about = None)]
 #[command(next_line_help = true)]
 #[command(color = ColorChoice::Auto)]
