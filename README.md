@@ -1,35 +1,51 @@
-Name is short for *Renovate*. A simple but powerful command-line batch file editor. Enables you to use regex search and replace on both filenames and contents, efficiently (multi-threaded) and cross-platform.
+# Renovate
+Name is short for *Renovate*. 
 
-To see it in action run
-`cargo run -- -S "test(\.md|\.txt)" -R "changed_test${1}"` and then check the filenames and contents of test.txt and test.md.
+A simple but powerful command-line batch file search-and-replace tool that is efficient and cross-platform.
 
-More examples:
-`reno -G *test.* -R "changed_test" --names` - test.txt becomes changed_test and test.md becomes changed_test, one of them will be overwritten depending on which thread wins.
-Is somewhat of a bug and I'll do some check for it but in the meantime be aware of that.
+# Features
+- 
+## To see it in action run
+`cargo run -- "test(\.md|\.txt)" "changed_test${1}"` and then check the filenames and contents of test.txt and test.md.
 
-`reno -S "^(FolderPrefix?)([^\.]*)$" -R ${2} --names` - Recursively removes the string FolderPrefix in the beginning of all folder names
+## More examples:
+`reno "^(FolderPrefix?)([^\.]*)$" "${2}" --names` - Recursively removes the string FolderPrefix in the beginning of all folder names
+
+## Dangerous scenarios:
+You should always run `--dry` before you let reno actually replace anything.
+For example, if you run `reno -G *test.* -R "changed_test" --names` then `test.txt` becomes changed_test BUT `test.md` ALSO BECOMES changed_test, leading to one of them being overwritten.
+This is somewhat of a bug and there will be some checks in place so that this doesn't happen.
 
 
 `> reno --help`
+
 ```
 A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.
 
-Usage: reno.exe [OPTIONS] <SEARCH>
+Usage: reno.exe [OPTIONS] <SEARCH> [REPLACE]
 
 Arguments:
   <SEARCH>
           Search regex or binary sequence if --bin is passed.
 
           In the binary mode, the search string should be a binary sequence with optional wildcards (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
-                
-Options:
-  -R <REPLACE>
-          Either regex (e.g.: "Hello ${1}") in the normal mode, or a binary sequence (e.g.: "\x22\x01\xD5\x44\x22\x01\x69\x55") in binary mode. Dry mode if left empty
 
+  [REPLACE]
+          Regex (e.g.: "Hello ${1}") in the normal mode.
+
+          **IMPORTANT**: Even though capture groups without curly braces (for example just $1 instead of ${1}) mostly work, I strongly advise using them as unexpected results can occur otherwise.
+
+          Be sure to always run --dry before you actually replace anything.
+
+          A binary sequence (e.g.: "\x22\x01\xD5\x44\x22\x01\x69\x55") in binary mode.
+
+          Dry mode if left empty.
+
+Options:
       --dry
           Don't modify files, just show what would happen
 
-  -G, --globs <GLOBS>
+  -g, --globs <GLOBS>
           Filename glob patterns, defaults to: "*"
 
           [default: **]

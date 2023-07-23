@@ -6,7 +6,7 @@ mod replace;
 
 use replace::*;
 use std::str;
-use clap::Parser;
+use clap::{Parser, ColorChoice};
 use std::path::PathBuf;
 use std::string::String;
 
@@ -18,27 +18,29 @@ const DEFAULT_MAX_DEPTH: &'static str = "4294967294";
 #[command(version = "0.0.1")]
 #[command(about = "A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.", long_about = None)]
 #[command(next_line_help = true)]
+#[command(color = ColorChoice::Auto)]
 struct Cli {
     /// Search regex or binary sequence if --bin is passed.
     /// 
     /// In the binary mode, the search string should be a binary sequence with optional wildcards (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
     search: String,
 
-    /// Either regex (e.g.: "Hello ${1}") in the normal mode to look what will be changed.
+    /// Regex (e.g.: "Hello ${1}") in the normal mode.
     /// 
-    /// IMPORTANT: Even though capture groups without curly braces (for example just $1 instead of ${1}) mostly work, I strongly advise using them as unexpected results can occur otherwise.
+    /// **IMPORTANT**: Even though capture groups without curly braces (for example just $1 instead of ${1}) mostly work, I strongly advise using them as unexpected results can occur otherwise.
     /// 
     /// Be sure to always run --dry before you actually replace anything.
     /// 
-    /// or a binary sequence (e.g.: "\x22\x01\xD5\x44\x22\x01\x69\x55") in binary mode.
-    /// Dry mode if left empty
+    /// A binary sequence (e.g.: "\x22\x01\xD5\x44\x22\x01\x69\x55") in binary mode.
+    /// 
+    /// Dry mode if left empty.
     replace: Option<String>,
 
     #[arg(long)]
     ///Don't modify files, just show what would happen.
     dry: bool,
 
-    #[arg(long, short = 'G', default_value = "**")]
+    #[arg(long, short, default_value = "**")]
     /// Filename glob patterns, defaults to: "*"
     globs: Vec<PathBuf>,
 
