@@ -3,17 +3,17 @@ extern crate encoding_rs_io;
 
 use anyhow::ensure;
 use anyhow::Result;
-use thiserror::Error;
-use std::str;
+use encoding_rs_io::DecodeReaderBytesBuilder;
 use itertools::Itertools;
 use regex::Regex;
 use std::fs;
 use std::fs::File;
+use std::io::{BufReader, Read};
 use std::path::Path;
 use std::path::PathBuf;
+use std::str;
 use std::string::String;
-use std::io::{BufReader, Read};
-use encoding_rs_io::DecodeReaderBytesBuilder;
+use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum DoContentError {
@@ -51,7 +51,6 @@ pub struct ByteMatcher {
     pub is_wildcard: bool,
 }
 
-
 pub fn do_contents(
     source_path: &Path,
     str_search: &str,
@@ -75,7 +74,13 @@ pub fn do_contents(
     Ok(replacement_infos)
 }
 
-fn do_contents_plain(source_path: &Path, file: File, str_search: &str, str_replace: &str, b_dry: bool) -> Result<Vec<FileReplacementInfo>> {
+fn do_contents_plain(
+    source_path: &Path,
+    file: File,
+    str_search: &str,
+    str_replace: &str,
+    b_dry: bool,
+) -> Result<Vec<FileReplacementInfo>> {
     let re = if !str_search.is_empty() {
         Regex::new(&str_search).unwrap()
     } else {
@@ -136,11 +141,16 @@ fn do_contents_plain(source_path: &Path, file: File, str_search: &str, str_repla
     return Ok(file_replacement_infos);
 }
 
-fn do_contents_binary(source_path: &Path, file: File, str_search: &str, str_replace: &str, b_dry: bool) -> Result<Vec<FileReplacementInfo>> {
-
+fn do_contents_binary(
+    source_path: &Path,
+    file: File,
+    str_search: &str,
+    str_replace: &str,
+    b_dry: bool,
+) -> Result<Vec<FileReplacementInfo>> {
     // decode string hex signature
     let decode_hex_bytes = |s: &str| -> Result<Vec<ByteMatcher>, DoContentError> {
-        let split_str = if s.contains("\\x") {"\\x"} else {" "};
+        let split_str = if s.contains("\\x") { "\\x" } else { " " };
         return s
             .split(split_str)
             .filter(|s| !s.is_empty())

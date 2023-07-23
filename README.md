@@ -4,7 +4,13 @@ Name is short for *Renovate*.
 A simple but powerful command-line batch file search-and-replace tool that is efficient and cross-platform.
 
 # Features
-- 
+- Search and replace filenames using regex
+- Search and replace file contents using regex
+- Regex capture groups
+- Binary search and replace using wildcard signatures
+- Globs
+- Multithreaded & written in rust
+
 ## To see it in action run
 `cargo run -- "test(\.md|\.txt)" "changed_test${1}"` and then check the filenames and contents of test.txt and test.md.
 

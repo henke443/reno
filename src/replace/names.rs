@@ -3,15 +3,13 @@ extern crate encoding_rs_io;
 
 use anyhow::Context;
 use anyhow::Result;
-use thiserror::Error;
-use std::str;
 use regex::Regex;
 use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
+use std::str;
 use std::string::String;
-
-
+use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum DoNamesError {

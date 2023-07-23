@@ -4,10 +4,10 @@ extern crate encoding_rs_io;
 mod glob_walk;
 mod replace;
 
+use clap::{ColorChoice, Parser};
 use replace::*;
-use std::str;
-use clap::{Parser, ColorChoice};
 use std::path::PathBuf;
+use std::str;
 use std::string::String;
 
 const DEFAULT_MAX_DEPTH: &'static str = "4294967294";
@@ -21,18 +21,18 @@ const DEFAULT_MAX_DEPTH: &'static str = "4294967294";
 #[command(color = ColorChoice::Auto)]
 struct Cli {
     /// Search regex or binary sequence if --bin is passed.
-    /// 
+    ///
     /// In the binary mode, the search string should be a binary sequence with optional wildcards (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
     search: String,
 
     /// Regex (e.g.: "Hello ${1}") in the normal mode.
-    /// 
+    ///
     /// **IMPORTANT**: Even though capture groups without curly braces (for example just $1 instead of ${1}) mostly work, I strongly advise using them as unexpected results can occur otherwise.
-    /// 
+    ///
     /// Be sure to always run --dry before you actually replace anything.
-    /// 
+    ///
     /// A binary sequence (e.g.: "\x22\x01\xD5\x44\x22\x01\x69\x55") in binary mode.
-    /// 
+    ///
     /// Dry mode if left empty.
     replace: Option<String>,
 
@@ -72,11 +72,7 @@ fn main() {
     let globs: Vec<String> = cli
         .globs
         .into_iter()
-        .map(|p| {
-            p.into_os_string()
-                .into_string()
-                .unwrap()
-        })
+        .map(|p| p.into_os_string().into_string().unwrap())
         .collect::<Vec<String>>();
 
     let max_depth = cli.depth + 1;
@@ -94,8 +90,6 @@ fn main() {
     )
     .unwrap();
 }
-
-
 
 #[cfg(test)]
 mod test;

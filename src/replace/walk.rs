@@ -1,15 +1,15 @@
 extern crate encoding_rs;
 extern crate encoding_rs_io;
 
+use crate::glob_walk::GlobWalkerBuilder;
 use crate::replace::contents::*;
 use crate::replace::names::*;
-use crate::glob_walk::GlobWalkerBuilder;
 
 use anyhow::Result;
-use std::str;
 use rayon::prelude::*;
 use std::fs::File;
 use std::fs::*;
+use std::str;
 use std::string::String;
 
 pub fn walk(
@@ -56,10 +56,7 @@ pub fn walk(
 
     println!("Contents: {:?}", b_contents);
     println!("File names: {:?}", b_names);
-    println!(
-        "Search regex: {}",
-        search_string.clone()
-    );
+    println!("Search regex: {}", search_string.clone());
     println!("Replace regex: {}", replacer_string.clone());
 
     walker.into_iter().par_bridge().for_each(|source_path| {
@@ -135,10 +132,10 @@ pub fn walk(
                         if b_verbose {
                             println!("Read decoding error: {:?}", e);
                         }
-                    },
+                    }
                     Some(DoContentError::HexDecodeError(_path, _)) => {
-                         println!("Hex decode error: {:?}", e);
-                         std::process::exit(1);
+                        println!("Hex decode error: {:?}", e);
+                        std::process::exit(1);
                     }
                     _ => {
                         panic!("Critical error: {}", e)
