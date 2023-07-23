@@ -48,10 +48,10 @@ This is somewhat of a bug and there will be some checks in place so that this do
 
 
 ## Planned features:
-`reno "4C 79 72 61 [utf8:A-z0-9/.\]*10" "00 00 00 00 [??...]" --bin -g test.bin` - To be able to safely edit text in binary files it would be nice to have some way of knowing that the text is followed by (or prepended/surrounded) by some number of valid ascii characters or utf8 characters. Having regex enabled when binary searching and replacing could also be useful but I think that could prove to not be very nice, and a simple approach like this would probably be best. The three features I'm planning currently are: 
-1. [encoding_name:optional_regexish_chars] bracket syntax
+`reno "4C 79 72 61 [utf8:[A-z0-9]{10}]*10" "00 00 00 00 [??...]" --bin -g test.bin` - To be able to safely edit text in binary files it would be nice to have some way of knowing that the text is followed by (or prepended/surrounded) by some number of valid ascii characters or utf8 characters. Having regex enabled when binary searching and replacing could also be useful but I think that could prove to not be very nice, and a simple approach like this would probably be best. The three features I'm planning currently are: 
+1. [encoding_name:regex]*length bracket syntax
 2. [anything...] triple dots variable length repetition
-2. [anything]*number bracket repetition syntax
+2. [anything]*length bracket repetition syntax
 
 
 
