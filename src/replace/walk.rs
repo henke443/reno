@@ -102,18 +102,20 @@ pub fn walk(
                     for replacement_info in replacement_infos {
                         println!("{:?}", replacement_info.path);
                         for replacement in replacement_info.replacements {
-                            println!(
-                                "    {} lines {}:{} = {:?} -> {:?}",
-                                if !replacement_info.did_change {
-                                    "<dry>"
-                                } else {
-                                    ""
-                                },
-                                replacement.start,
-                                replacement.end,
-                                replacement.original,
-                                replacement.new
-                            );
+                            if (!b_bin || b_verbose) { 
+                                println!(
+                                    "    {} at {}:{} = {:?} -> {:?}",
+                                    if !replacement_info.did_change {
+                                        "<dry>"
+                                    } else {
+                                        ""
+                                    },
+                                    replacement.start,
+                                    replacement.end,
+                                    replacement.original,
+                                    replacement.new
+                                );
+                            }  
                         }
                     }
                 }
