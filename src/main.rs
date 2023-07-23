@@ -22,6 +22,8 @@ struct Cli {
     #[arg(short = 'S')]
     /// Search regex or binary sequence if --bin is passed.
     /// Can only be omitted if --names is present
+    /// 
+    /// In the binary mode, the search string should be a binary sequence with optional wildcards (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
     search: Option<String>,
 
     #[arg(short = 'R')]
@@ -53,7 +55,6 @@ struct Cli {
     #[arg(long, short, default_value = DEFAULT_MAX_DEPTH)]
     /// Max depth of directory traversal.
     /// 0 means only current directory.
-    /// Defaults to unlimited.
     depth: usize,
 
     #[arg(long, short)]

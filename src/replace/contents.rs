@@ -140,8 +140,9 @@ fn do_contents_binary(source_path: &Path, file: File, str_search: &str, str_repl
 
     // decode string hex signature
     let decode_hex_bytes = |s: &str| -> Result<Vec<ByteMatcher>, DoContentError> {
+        let split_str = if s.contains("\\x") {"\\x"} else {" "};
         return s
-            .split("\\x")
+            .split(split_str)
             .filter(|s| !s.is_empty())
             .map(|s| -> Result<ByteMatcher, DoContentError> {
                 return u8::from_str_radix(s, 16)
