@@ -14,22 +14,42 @@ A small CLI utility written in Rust that helps with searching and replacing file
 Usage: reno.exe [OPTIONS]
 
 Options:
-  -G, --glob-patterns <GLOB_PATTERNS>
-          Filename glob patterns, defaults to: "./*.*"
-  -S <SEARCH_REGEX>
-          Search regex
-  -R <REPLACE_REGEX>
-          Replace regex
-  -d, --dry
+  -S <SEARCH>
+          Search regex or binary sequence if --bin is passed. Can only be omitted if --names is present
+
+          In the binary mode, the search string should be a binary sequence with optional wildcards (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
+
+  -R <REPLACE>
+          Either regex (e.g.: "Hello $1") in the normal mode, or a binary sequence (e.g.: "\x22\x01\xD5\x44\x22\x01\x69\x55") in binary mode. Dry mode if left empty
+
+      --dry
           Don't modify files, just show what would happen
+
+  -G, --globs <GLOBS>
+          Filename glob patterns, defaults to: "*"
+
+          [default: *]
+
+  -b, --bin
+          Binary search and replace mode
+
   -c, --contents
           Only search and replace file contents
+
   -n, --names
           Only search and replace file names
-  -m, --max-depth <MAX_DEPTH>
-          Max depth of directory traversal, unlimited by default. 0 means only the current directory
+
+  -d, --depth <DEPTH>
+          Max depth of directory traversal. 0 means only current directory
+
+          [default: 4294967294]
+
+  -v, --verbose
+          Only search and replace file names
+
   -h, --help
-          Print help
+          Print help (see a summary with '-h')
+
   -V, --version
           Print version
 ```
