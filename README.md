@@ -4,7 +4,7 @@ To see it in action run
 `cargo run -- -S "test(\.md|\.txt)" -R "changed_test$1"` and then check the filenames and contents of test.txt and test.md.
 
 More examples:
-`reno -G *test.* -R "changed_test" --names` - hello henrik becomes changed_test and test.md becomes changed_test, one of them will be overwritten depending on which thread wins.
+`reno -G *test.* -R "changed_test" --names` - test.txt becomes changed_test and test.md becomes changed_test, one of them will be overwritten depending on which thread wins.
 Is somewhat of a bug and I'll do some check for it but in the meantime be aware of that.
 
 `reno -S "^(FolderPrefix?)([^\.]*)$" -G **/** -R $2 --names` - Recursively removes the string FolderPrefix in the beginning of all folder names
