@@ -138,7 +138,7 @@ pub fn walk(
                         std::process::exit(1);
                     }
                     _ => {
-                        panic!("Critical error: {}", e)
+                        println!("Unhandled error: {} \nAttempting to continue...", e)
                     }
                 },
             }
