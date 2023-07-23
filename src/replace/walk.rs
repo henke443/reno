@@ -15,7 +15,7 @@ use std::string::String;
 pub fn walk(
     globs: Vec<String>,
     max_depth: usize,
-    search_string: Option<String>,
+    search_string: String,
     replacer_string: Option<String>,
     replace_filenames: bool,
     replace_contents: bool,
@@ -42,14 +42,6 @@ pub fn walk(
         }
     };
 
-    if search_string.is_none() {
-        if !b_names {
-            println!("No search string provided and no --names, dry run.");
-            b_replace = false;
-        }
-        b_contents = false;
-    }
-
     let base_dir = ".";
 
     let walker = GlobWalkerBuilder::from_patterns(base_dir, &globs)
@@ -66,7 +58,7 @@ pub fn walk(
     println!("File names: {:?}", b_names);
     println!(
         "Search regex: {}",
-        search_string.clone().unwrap_or(String::from("none"))
+        search_string.clone()
     );
     println!("Replace regex: {}", replacer_string.clone());
 
@@ -100,10 +92,10 @@ pub fn walk(
         }
         //let mut reader = BufReader::new(_reader);
 
-        if b_contents && search_string.is_some() {
+        if b_contents {
             let content_info = do_contents(
                 source_path.path(),
-                &(search_string.as_ref().unwrap()),
+                search_string.as_ref(),
                 &replacer_string,
                 b_dry,
                 b_bin,
@@ -158,7 +150,7 @@ pub fn walk(
         if b_names {
             let names_info = do_names(
                 source_path.path(),
-                search_string.clone(),
+                search_string.as_ref(),
                 &replacer_string,
                 b_dry,
             );

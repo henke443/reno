@@ -33,15 +33,11 @@ pub struct NameReplacementInfo {
 
 pub fn do_names(
     source_path: &Path,
-    str_search: Option<String>,
+    str_search: &str,
     str_replace: &str,
     b_dry: bool,
 ) -> Result<Vec<NameReplacementInfo>> {
-    let re = if str_search.is_some() {
-        Regex::new(&str_search.unwrap())?
-    } else {
-        Regex::new(".*")?
-    };
+    let re = Regex::new(&str_search)?;
 
     let old_path = source_path;
     let old_name = old_path

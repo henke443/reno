@@ -19,15 +19,17 @@ const DEFAULT_MAX_DEPTH: &'static str = "4294967294";
 #[command(about = "A small CLI utility written in Rust that helps with searching and replacing filenames and file contents recursively using regex and glob patterns.", long_about = None)]
 #[command(next_line_help = true)]
 struct Cli {
-    #[arg(short = 'S')]
     /// Search regex or binary sequence if --bin is passed.
-    /// Can only be omitted if --names is present
     /// 
     /// In the binary mode, the search string should be a binary sequence with optional wildcards (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
-    search: Option<String>,
+    search: String,
 
-    #[arg(short = 'R')]
-    /// Either regex (e.g.: "Hello $1") in the normal mode,
+    /// Either regex (e.g.: "Hello ${1}") in the normal mode to look what will be changed.
+    /// 
+    /// IMPORTANT: Even though capture groups without curly braces (for example just $1 instead of ${1}) mostly work, I strongly advise using them as unexpected results can occur otherwise.
+    /// 
+    /// Be sure to always run --dry before you actually replace anything.
+    /// 
     /// or a binary sequence (e.g.: "\x22\x01\xD5\x44\x22\x01\x69\x55") in binary mode.
     /// Dry mode if left empty
     replace: Option<String>,
@@ -36,7 +38,7 @@ struct Cli {
     ///Don't modify files, just show what would happen.
     dry: bool,
 
-    #[arg(long, short = 'G', default_value = "*")]
+    #[arg(long, short = 'G', default_value = "**")]
     /// Filename glob patterns, defaults to: "*"
     globs: Vec<PathBuf>,
 
@@ -65,16 +67,13 @@ struct Cli {
 fn main() {
     let cli = Cli::parse();
 
-    let default_globs_s = String::from("*");
-    let _default_globs = vec![default_globs_s.clone()];
-
     let globs: Vec<String> = cli
         .globs
         .into_iter()
         .map(|p| {
             p.into_os_string()
                 .into_string()
-                .unwrap_or_else(|_| default_globs_s.clone())
+                .unwrap()
         })
         .collect::<Vec<String>>();
 
