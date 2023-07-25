@@ -1,4 +1,6 @@
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=henke443)](https://github.com/anuraghazra/github-readme-stats)
+#![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![rust workflow](https://github.com/henke443/reno/actions/workflows/rust.yml/badge.svg)
 
 # Renovate
 Name is short for *Renovate*. 
