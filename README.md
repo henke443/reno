@@ -1,5 +1,3 @@
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=henke443)](https://github.com/anuraghazra/github-readme-stats)
-#![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 ![rust workflow](https://github.com/henke443/reno/actions/workflows/rust.yml/badge.svg)
 
 # Renovate
@@ -114,6 +112,10 @@ Options:
 1. [encoding_name:regex]*length bracket syntax
 2. [anything...] triple dots variable length repetition
 2. [anything]*length bracket repetition syntax
+
+## Testing out some github badges
+[![Henrik's GitHub stats](https://github-readme-stats.vercel.app/api?username=henke443)](https://github.com/anuraghazra/github-readme-stats)
+
 
 
 
