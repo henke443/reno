@@ -61,12 +61,14 @@ Arguments:
   <SEARCH>
           Search regex or binary sequence if --bin is passed.
 
-          In the binary mode, the search string should be a binary sequence with optional wildcards (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
+          In the binary mode, the search string should be a binary sequence with optional wildcards 
+          (e.g.: "\x22\x??\x??\x44\x22\x01\x69\x55" or "22 ?? ?? 44 22 01 69 55"))
 
   [REPLACE]
           Regex (e.g.: "Hello ${1}") in the normal mode.
 
-          **IMPORTANT**: Even though capture groups without curly braces (for example just $1 instead of ${1}) mostly work, I strongly advise using them as unexpected results can occur otherwise.
+          **IMPORTANT**: Even though capture groups without curly braces (for example just $1 instead of ${1}) mostly work, 
+          I strongly advise using them as unexpected results can occur otherwise.
 
           Be sure to always run --dry before you actually replace anything.
 
