@@ -62,7 +62,7 @@ struct Cli {
     depth: usize,
 
     #[arg(long, short)]
-    /// Only search and replace file names
+    /// Prints (very) verbosely
     verbose: bool,
 }
 

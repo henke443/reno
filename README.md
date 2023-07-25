@@ -98,7 +98,7 @@ Options:
           [default: 4294967294]
 
   -v, --verbose
-          Only search and replace file names
+          Prints (very) verbosely
 
   -h, --help
           Print help (see a summary with '-h')
