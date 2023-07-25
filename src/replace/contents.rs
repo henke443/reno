@@ -220,7 +220,7 @@ fn do_contents_binary(
 
         if (matched) { 
             for (matched_i, matched_byte) in potential_match.iter_mut().enumerate() {
-                if (!replace_hex_bytes[matched_i].is_wildcard) {
+                if !replace_hex_bytes[matched_i].is_wildcard {
                     *matched_byte = replace_hex_bytes[matched_i].value;
                 }
             }
