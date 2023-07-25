@@ -1,6 +1,7 @@
 extern crate encoding_rs;
 extern crate encoding_rs_io;
 
+use anyhow::bail;
 use anyhow::ensure;
 use anyhow::Result;
 use encoding_rs_io::DecodeReaderBytesBuilder;
@@ -229,8 +230,9 @@ fn do_contents_binary(
         }
 
         if !b_dry && matched {
-            file.seek(SeekFrom::Start(i as u64));
-            file.write_all(&potential_match);
+            file.seek(SeekFrom::Start(i as u64)).unwrap_or_else(|e| panic!("Could not seek {}: {:?}", source_path.to_string_lossy(), e));
+            file.write_all(&potential_match).unwrap_or_else(|e| panic!("Could not write to {}: {:?}", source_path.to_string_lossy(), e));
+            // TODO Could use seek_write here if windows
             //file.seek_write(&potential_match, i as u64).unwrap_or_else(|e| panic!("Could not seek_write: {:?}", e));
         }
 
