@@ -12,6 +12,7 @@ use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Seek;
 use std::io::SeekFrom;
+use std::io::Write;
 use std::io::{BufReader, Read};
 //use std::os::windows::prelude::FileExt;
 use std::path::Path;
@@ -228,7 +229,9 @@ fn do_contents_binary(
         }
 
         if !b_dry && matched {
-            file.seek_write(&potential_match, i as u64).unwrap_or_else(|e| panic!("Could not seek_write: {:?}", e));
+            file.seek(SeekFrom::Start(i as u64));
+            file.write_all(&potential_match);
+            //file.seek_write(&potential_match, i as u64).unwrap_or_else(|e| panic!("Could not seek_write: {:?}", e));
         }
 
         if (matched) {
