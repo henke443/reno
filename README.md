@@ -113,14 +113,17 @@ Options:
 - [ ] If two files are renamed to the same name
 - [ ] By default the user should be prompted to accept dry run results before actual changes are ran, at the very least batches of the results.
 
+## Add tests
+- [ ] Add first proper test using tempfile
+      
 ### Binary regex
 `reno "4C 79 72 61 [utf8:[A-z0-9]{10}]*10" "00 00 00 00 [??]..." --bin -g test.bin` - To be able to safely edit text in binary files it would be nice to have some way of knowing that the text is followed by (or prepended/surrounded) by some number of valid ascii characters or utf8 characters. A simple approach like this would probably be best. The three features I'm planning currently are: 
-1. [encoding_name:regex]*length bracket syntax
-2. [anything]... triple dots meaning any number of repetitions
-3. [anything]*length bracket repetition syntax
+- [ ] [encoding_name:regex]*length bracket syntax
+- [ ] [anything]... triple dots meaning any number of repetitions
+- [ ] [anything]*length bracket repetition syntax
   
 ### Modifying globwalk.rs?
-It doesn't really support multithreading atm so I use `.par_bridge()`
+- [ ] Fix multithreading so I don't have to use `.par_bridge()`
 
 
 ## Testing out some github badges
