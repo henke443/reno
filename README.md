@@ -1,6 +1,6 @@
 ![rust workflow](https://github.com/henke443/reno/actions/workflows/rust.yml/badge.svg)
 
-# The Renovate CLI Tool
+# Renovate CLI
 Reno is short for *Renovate*. 
 
 A simple but powerful command-line batch file search-and-replace tool that is efficient and cross-platform.
