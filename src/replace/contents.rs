@@ -13,7 +13,7 @@ use std::fs::OpenOptions;
 use std::io::Seek;
 use std::io::SeekFrom;
 use std::io::{BufReader, Read};
-use std::os::windows::prelude::FileExt;
+//use std::os::windows::prelude::FileExt;
 use std::path::Path;
 use std::path::PathBuf;
 use std::str;
