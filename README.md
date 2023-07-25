@@ -107,15 +107,15 @@ Options:
           Print version
 ```
 
-## Planned features / TODO:
+# Planned features / TODO:
 
-### Add more warnings and safety checks
+### ⚠️Add more warnings and safety checks⚠️
 - [ ] If two files are renamed to the same name
 - [ ] By default the user should be prompted to accept dry run results before actual changes are ran, at the very least batches of the results.
 - [ ] Make dry run results prettier and easier to skim through
 - [ ] Add more colors to cli output
 
-## Add tests
+### Add tests
 - [ ] Add first proper test using tempfile
       
 ### Binary regex
