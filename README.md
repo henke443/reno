@@ -3,7 +3,7 @@
 # Renovate CLI
 Reno is short for *Renovate*. 
 
-A simple but powerful command-line batch file search-and-replace tool that is efficient and cross-platform.
+A simple but powerful command-line batch file search-and-replace tool that is fast and cross-platform.
 
 # Features
 - Search & replace files
