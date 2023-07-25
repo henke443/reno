@@ -84,7 +84,7 @@ Options:
           Don't modify files, just show what would happen
 
   -g, --globs <GLOBS>
-          Filename glob patterns, defaults to: "*"
+          Filename glob patterns, defaults to: "**"
 
           [default: **]
 
