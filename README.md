@@ -6,9 +6,9 @@ Reno is short for *Renovate*.
 A simple but powerful command-line batch file search-and-replace tool that is efficient and cross-platform.
 
 # Features
-- Search & replace files 
+- Search & replace files
 
-# Sub features
+# Sub Features
 - Search and replace file and folder names using regex
 - Search and replace file contents using regex
 - Regex capture groups
