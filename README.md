@@ -13,7 +13,7 @@ A simple but powerful command-line batch file search-and-replace tool that is fa
 - Search and replace file contents using regex
 - Regex capture groups
 - Binary search and replace using wildcard signatures
-- Globs
+- Globs (limited support for long relative paths right now until I modify globwalker probably)
 - Multithreaded & written in rust
 
 ## To see it in action run
