@@ -7,7 +7,6 @@ on:
     branches: [ "main" ]
 env:
   # Setting an environment variable with the value of a configuration variable
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   CARGO_TERM_COLOR: always
   
 
