@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 env:
   # Setting an environment variable with the value of a configuration variable
-  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   CARGO_TERM_COLOR: always
   
 
@@ -23,8 +23,6 @@ jobs:
       run: cargo test --verbose
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
-      with: 
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
