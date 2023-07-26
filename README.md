@@ -9,12 +9,12 @@ A simple but powerful command-line batch file search-and-replace tool that is fa
 - Search & replace files
 
 # Sub Features
+- Multithreaded & written in rust
 - Search and replace file and folder names using regex
 - Search and replace file contents using regex
 - Regex capture groups
 - Binary search and replace using wildcard signatures
 - Globs (limited support for long relative paths right now until I modify globwalker probably)
-- Multithreaded & written in rust
 
 ## To see it in action run
 `cargo run -- "test(\.md|\.txt)" "changed_test${1}"` and then check the filenames and contents of test.txt and test.md.
