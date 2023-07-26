@@ -122,6 +122,12 @@ Options:
 
 ### Add tests
 - [ ] Add first proper test using tempfile
+
+### Regex match and replace on the whole path and not just filename
+- [ ] Should match whole path
+- [ ] Should be able to move files and not just rename using this
+- [ ] Should think about safety checks that needs to be implemented
+- [ ] Should write tests for the rest before I start so I can do TDD
       
 ### Binary regex
 `reno "4C 79 72 61 [utf8:[A-z0-9]{10}]*10" "00 00 00 00 [??]..." --bin -g test.bin` - To be able to safely edit text in binary files it would be nice to have some way of knowing that the text is followed by (or prepended/surrounded) by some number of valid ascii characters or utf8 characters. A simple approach like this would probably be best. The three features I'm planning currently are: 
